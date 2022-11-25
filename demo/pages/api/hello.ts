@@ -7,4 +7,7 @@ export default router
   .get((req, res) => {
     res.send("get request");
   })
+  .all((req, res) => {
+    res.status(404).send("not found");
+  })
   .handle();

@@ -56,9 +56,16 @@ class Router {
   handle() {
     return async (req: NextApiRequest, res: NextApiResponse) => {
       const handler = this.handlers[req.method ?? ""];
-      if (handler == undefined) {
-        res.status(405).send("405 Method Not Allowed");
-        return;
+      // no handler defined for method
+      if (handler === undefined) {
+        const fallback = this.handlers["*"];
+        // no handler defined as fallback `.all()`
+        if (fallback === undefined) {
+          res.status(405).send("Method not allowed");
+          return;
+        }
+
+        return fallback(req, res);
       }
 
       for (const i of this.middlewares) {
@@ -102,6 +109,13 @@ class Router {
    */
   delete<T = any>(fn: NextApiHandler<T>) {
     return this.route("DELETE", fn);
+  }
+
+  /**
+   * Fallback handler for all other http requests.
+   */
+  all<T = any>(fn: NextApiHandler<T>) {
+    return this.route("*", fn);
   }
 }
 
