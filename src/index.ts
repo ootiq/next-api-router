@@ -1,6 +1,4 @@
-import { NextApiRequest, NextApiResponse } from "next";
-
-type APIFunction = (req: NextApiRequest, res: NextApiResponse) => any;
+import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 
 // And to throw an error when an error happens in a middleware
 export function runMiddleware(
@@ -21,7 +19,7 @@ export function runMiddleware(
 
 class Router {
   middlewares: Function[];
-  handlers: Record<string, APIFunction>;
+  handlers: Record<string, NextApiHandler>;
 
   constructor() {
     this.middlewares = [];
@@ -43,7 +41,7 @@ class Router {
    * @param fn Callback function of the route.
    * @returns {Router}
    */
-  route(method: string, fn: APIFunction): Router {
+  route<T = any>(method: string, fn: NextApiHandler<T>): Router {
     const _router = new Router();
     _router.middlewares = this.middlewares;
     _router.handlers = this.handlers;
@@ -74,35 +72,35 @@ class Router {
   /**
    * Route HTTP Get request.
    */
-  get(fn: APIFunction) {
+  get<T = any>(fn: NextApiHandler<T>) {
     return this.route("GET", fn);
   }
 
   /**
    * Route HTTP Post request.
    */
-  post(fn: APIFunction) {
+  post<T = any>(fn: NextApiHandler<T>) {
     return this.route("POST", fn);
   }
 
   /**
    * Route HTTP Put request.
    */
-  put(fn: APIFunction) {
+  put<T = any>(fn: NextApiHandler<T>) {
     return this.route("PUT", fn);
   }
 
   /**
    * Route HTTP Patch request.
    */
-  patch(fn: APIFunction) {
+  patch<T = any>(fn: NextApiHandler<T>) {
     return this.route("PATCH", fn);
   }
 
   /**
    * Route HTTP Delete request.
    */
-  delete(fn: APIFunction) {
+  delete<T = any>(fn: NextApiHandler<T>) {
     return this.route("DELETE", fn);
   }
 }
