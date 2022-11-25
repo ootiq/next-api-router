@@ -1,16 +1,19 @@
 {
   "name": "@ootiq/next-api-router",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.0.1",
+  "description": "Custom route handler for Nextjs's file-sytem api routing.",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": "./dist/index.js",
+  "repository": "ootiq/next-api-router",
+  "license": "MIT",
   "scripts": {
     "demo:dev": "next dev demo",
     "demo:build": "next build demo",
     "demo:start": "next start demo",
     "demo:lint": "next lint demo",
+    "prepack": "pnpm build",
     "build": "tsup"
   },
   "tsup": {
